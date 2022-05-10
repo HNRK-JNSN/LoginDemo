@@ -1,17 +1,31 @@
 ﻿@inherits LayoutComponentBase
+@inject IAccountService AccountService
+@inject NavigationManager NavigationManager
 
 <div class="page">
+
+@if (LoggedIn) 
+{
     <div class="sidebar">
-        <NavMenu />
+        <NavMenu User="@User"/>
     </div>
+}
 
     <main>
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
+        <div class="app-container @(LoggedIn ? "bg-light" : "")">
+            <Alert />
             @Body
-        </article>
+        </div>
     </main>
+
 </div>
+
+@code {
+
+    public User User => AccountService?.User;
+    
+    public bool LoggedIn 
+    {
+        get { return AccountService.User != null; }
+    }
+}

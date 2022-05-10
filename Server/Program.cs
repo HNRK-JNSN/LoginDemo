@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.ResponseCompression;
+using LoginDemo.Server.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+builder.Services
+    .AddSingleton<DapperContext>()
+    .AddScoped<IAccountRepository, AccountRepository>();
 
 var app = builder.Build();
 
@@ -27,7 +32,6 @@ app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
 app.UseRouting();
-
 
 app.MapRazorPages();
 app.MapControllers();

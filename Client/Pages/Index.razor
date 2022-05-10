@@ -1,9 +1,32 @@
 ﻿@page "/"
+@attribute [Authorize]
+@inject IAccountService AccountService
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+@if (user == null)
+{
+    <p><em>Authenticating ...</em></p>
+}
+else {
+    <div class="p-4">
+        <div class="container">
+            <h1>Hi @user?.Name</h1>
+            <p>You're logged in with Blazor WebAssembly!!</p>
+            @if (@user?.Role == 1) {
+                <p>You can do serious stuff!</p>
+            }
+        </div>
+    </div>
+}
 
-Welcome to your new app.
+@code {
+    
+    private User? user;
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+    protected override void OnInitialized()
+    {
+        user = @AccountService.User;
+    }
+
+}
