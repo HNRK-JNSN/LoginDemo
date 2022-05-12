@@ -44,12 +44,8 @@ namespace LoginDemo.Client.Services
 
         public async Task Login(Login model)
         {
-            User = await _httpClient.PostAsJsonAsync<Login>("/account/authenticate", model).Result.Content.ReadFromJsonAsync<User>();
-
-            //User = await response.Content.ReadFromJsonAsync<User>();
-            
-            Console.WriteLine("Hello");
-
+            var response = await _httpClient.PostAsJsonAsync<Login>("/account/authenticate", model);
+            User = await response.Content.ReadFromJsonAsync<User>();            
             await _localStorageService.SetItem(_userKey, User);
         }
 

@@ -31,13 +31,15 @@ namespace LoginDemo.Server.Repositories
 
         public async Task<User?> AuthenticateUser (Login model)
         {
-            var parameters = new { username = model.EmailAddress, password = model.Password };
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@email", model.EmailAddress);
+            parameters.Add("@password", model.Password);
 
-            var query = "SELECT authenticate_user(@username, @password)";
+            var query = "SELECT * FROM authenticate_user(@email, @password)";
 
             using (var connection = _context.CreateConnection())
             {
-                var user = await connection.QueryFirstAsync<User>(query, parameters);
+                var user = await connection.QuerySingleOrDefaultAsync<User>(query, parameters);
                 return user;
             }
         }

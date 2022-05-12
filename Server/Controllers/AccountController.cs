@@ -32,7 +32,7 @@ namespace LoginDemo.Server.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("authenticate")]
         [Consumes("application/json")]
         public async Task<IActionResult> AuthenticateUser([FromBody] Login model)
         {
@@ -40,11 +40,10 @@ namespace LoginDemo.Server.Controllers
             {
                 return NotFound();
             }
-            Console.WriteLine($"Authenticating ${model.EmailAddress}");
 
             try
             {
-                var user = await _accountRepo.AuthenticateUser(model);
+                var user = await _accountRepo.AuthenticateUser(model);               
                 return Ok(user);
             }
             catch (Exception ex)

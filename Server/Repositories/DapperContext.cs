@@ -11,8 +11,6 @@ namespace LoginDemo.Server.Repositories
         {
             _configuration = configuration;
             _connectionString = _configuration.GetConnectionString("pgconnection");
-
-            Console.WriteLine($"{_connectionString}");
         }
 
         public IDbConnection CreateConnection() => new NpgsqlConnection(_connectionString); 
