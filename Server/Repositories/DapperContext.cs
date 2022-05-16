@@ -10,7 +10,7 @@ namespace LoginDemo.Server.Repositories
         public DapperContext(IConfiguration configuration)
         {
             _configuration = configuration;
-            _connectionString = _configuration.GetConnectionString("pgconnection");
+            _connectionString = _configuration.GetConnectionString("azuredb");
         }
 
         public IDbConnection CreateConnection() => new NpgsqlConnection(_connectionString); 
