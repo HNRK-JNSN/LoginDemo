@@ -7,6 +7,8 @@ namespace LoginDemo.Server.Repositories
     {
         public Task<IEnumerable<User>> GetUsers();
         public Task<User?> AuthenticateUser (Login model);
+
+        public Task<int> AddUser(AddUser model);
     }
 
     public class AccountRepository : IAccountRepository
@@ -29,6 +31,31 @@ namespace LoginDemo.Server.Repositories
             }
         }
 
+        public async Task<int> AddUser(AddUser model)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@name", model.Name);
+            parameters.Add("@email", model.EmailAddress);
+            parameters.Add("@role", model.Role);
+            parameters.Add("@password", model.Password);
+
+            var query = "call public.create_user(@name, @email, @role, @password)";
+            int affected = 0;
+
+            using (var connection = _context.CreateConnection())
+            {
+                try {
+                    var res = await connection.ExecuteAsync(query, parameters);
+                    affected=1;
+                } catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
+
+            return affected;
+        }
+
         public async Task<User?> AuthenticateUser (Login model)
         {
             DynamicParameters parameters = new DynamicParameters();
@@ -36,12 +63,20 @@ namespace LoginDemo.Server.Repositories
             parameters.Add("@password", model.Password);
 
             var query = "SELECT * FROM authenticate_user(@email, @password)";
+            User? user = null;
 
             using (var connection = _context.CreateConnection())
             {
-                var user = await connection.QuerySingleOrDefaultAsync<User>(query, parameters);
-                return user;
+                try 
+                {
+                    user = await connection.QuerySingleOrDefaultAsync<User>(query, parameters);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
+            return user;
         }
     }
 

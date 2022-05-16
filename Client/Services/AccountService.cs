@@ -12,10 +12,8 @@ namespace LoginDemo.Client.Services
         Task Initialize();
         Task Login(Login model);
         Task Logout();
-        Task Register(AddUser model);
-        //Task<IList<User>> GetAll();
-        //Task<User> GetById(string id);
-        //Task Delete(string id);
+        Task CreateUser(AddUser model);
+
     }
 
     public class AccountService : IAccountService
@@ -56,21 +54,12 @@ namespace LoginDemo.Client.Services
             _navigationManager.NavigateTo("/login");
         }
 
-        public async Task Register(AddUser model)
+        public async Task CreateUser(AddUser model)
         {
-            // TODO: get users from controller by id;
-            //return null;
+            var response = await _httpClient.PostAsJsonAsync<AddUser>("/account/user", model);
+            // TODO: error handling
+            _navigationManager.NavigateTo("/");
         }
-
-        // public async Task<IList<User>> GetAll()
-        // {
-        //     //     // TODO: get users from controller by id;
-        // }
-
-        // public async Task<User> GetById(string id)
-        // {
-        //     // TODO: get users from controller by id;
-        // }
 
     }
 }

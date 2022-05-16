@@ -1,10 +1,10 @@
-@page "/register"
+@page "/user"
 @inject IAccountService AccountService
 @inject IAlertService AlertService
 @inject NavigationManager NavigationManager
 
 <div class="card">
-    <h4 class="card-header">Add User</h4>
+    <h4 class="card-header">Create User</h4>
     <div class="card-body">
         <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
             <DataAnnotationsValidator />
@@ -17,6 +17,11 @@
                 <label>Email</label>
                 <InputText @bind-Value="model.EmailAddress" class="form-control" />
                 <ValidationMessage For="@(() => model.EmailAddress)" />
+            </div>
+            <div class="form-group">
+                <label>Role</label>
+                <InputNumber @bind-Value="model.Role" class="form-control" />
+                <ValidationMessage For="@(() => model.Role)" />
             </div>
             <div class="form-group">
                 <label>Password</label>
@@ -48,9 +53,9 @@
         loading = true;
         try
         {
-            await AccountService.Register(model);
-            AlertService.Success("Registration successful", keepAfterRouteChange: true);
-            NavigationManager.NavigateTo("login");
+            await AccountService.CreateUser(model);
+            AlertService.Success("User added successfully", keepAfterRouteChange: true);
+            NavigationManager.NavigateTo("/");
         }
         catch (Exception ex)
         {

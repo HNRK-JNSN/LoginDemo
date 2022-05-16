@@ -32,6 +32,31 @@ namespace LoginDemo.Server.Controllers
             }
         }
 
+        [HttpPost("user")]
+        [Consumes("application/json")]
+        public async Task<IActionResult> AddUser([FromBody] AddUser model)
+        {
+            try {
+                var aff = await _accountRepo.AddUser(model);
+
+                if (aff > 0) 
+                {
+                    return Ok();
+                } 
+                else 
+                {
+                    return StatusCode(409, "Could not insert user");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+            
+        }
+
+
         [HttpPost("authenticate")]
         [Consumes("application/json")]
         public async Task<IActionResult> AuthenticateUser([FromBody] Login model)

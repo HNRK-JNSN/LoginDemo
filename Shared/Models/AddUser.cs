@@ -13,5 +13,8 @@ namespace LoginDemo.Shared.Models
         [Required]
         [MinLength(6, ErrorMessage = "The Password field must be a minimum of 6 characters")]
         public string? Password { get; set; }
+
+        [Required]
+        public short Role {get; set;}
     }
 }
