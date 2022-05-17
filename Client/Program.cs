@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Blazored.LocalStorage;
 using LoginDemo.Client;
 using LoginDemo.Client.Services;
 
@@ -8,9 +9,9 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services
+    .AddBlazoredLocalStorage()
     .AddScoped<IAccountService, AccountService>()
     .AddScoped<IAlertService, AlertService>()
-    .AddScoped<ILocalStorageService, LocalStorageService>()
     .AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
 var app = builder.Build();
