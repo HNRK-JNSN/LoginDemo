@@ -9,7 +9,7 @@
   <ItemGroup>
     <PackageReference Include="dapper" Version="2.0.123" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="6.0.4" />
-    <PackageReference Include="npgsql" Version="6.0.4" />
+    <PackageReference Include="npgsql" Version="6.0.11" />
   </ItemGroup>
 
   <ItemGroup>
